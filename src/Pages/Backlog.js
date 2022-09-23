@@ -4,15 +4,39 @@ import { Button, Col, Form, Input, Label, Row } from "reactstrap";
 import Accordion from "react-bootstrap/Accordion";
 import ModalInput from "./Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faList } from "@fortawesome/free-solid-svg-icons";
+import GlobalContext from "../contexts/GlobalContext";
 
 const Backlog = () => {
   const [modal, setModal] = React.useState(false);
   const [userStory, setUserStory] = useState([]);
-  const [list, setList] = useState([]);
+  const { list, setList } = React.useContext(GlobalContext);
 
   const toggle = () => {
     setModal(!modal);
   };
+
+  const dragItem = React.useRef(null);
+  const dragOverItem = React.useRef(null);
+
+  const handleSort = () => {
+    let storyList = [...list];
+    const draggedItemContent = storyList.splice(dragItem.current, 1)[0];
+    storyList.splice(dragOverItem.current, 0, draggedItemContent);
+    dragItem.current = null;
+    dragOverItem.current = null;
+    setList(storyList);
+  };
+
+  //   const onDragStart = (e: React.DragEvent<HTMLDivElement>, index: Number) => {
+  //     console.log("drag started", index);
+  //   };
+  //   const onDragEnter = (e: React.DragEvent<HTMLDivElement>, index: Number) => {
+  //     console.log("drag enter", index);
+  //   };
+  //   const onDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+  //     console.log("drag end");
+  //   };
 
   return (
     <div>
@@ -47,7 +71,7 @@ const Backlog = () => {
                 <h5> Backlog P.O </h5>
               </div>
 
-              <Button
+              <div
                 style={{
                   backgroundColor: "#EA4949",
                   border: "none",
@@ -55,7 +79,7 @@ const Backlog = () => {
                 onClick={toggle}
               >
                 Add US
-              </Button>
+              </div>
             </div>
           </Accordion.Header>
           <Accordion.Body>
@@ -63,21 +87,25 @@ const Backlog = () => {
               {list.map((l, index) => {
                 return (
                   <li
+                    onDragStart={(e) => (dragItem.current = index)}
+                    onDragEnter={(e) => (dragOverItem.current = index)}
+                    onDragEnd={handleSort}
+                    onDragOver={(e) => e.preventDefault()}
+                    draggable
                     key={index}
                     style={{
+                      cursor: "move",
                       listStyle: "none",
                       height: "2rem",
                       backgroundColor: "lightgray",
                       marginTop: "1rem",
                     }}
                   >
+                    <FontAwesomeIcon
+                      style={{ marginRight: "1rem" }}
+                      icon={faList}
+                    />{" "}
                     {l}{" "}
-                    <Button>
-                      <FontAwesomeIcon
-                        style={{ color: "red" }}
-                        icon="fa-solid fa-trash"
-                      />
-                    </Button>
                   </li>
                 );
               })}

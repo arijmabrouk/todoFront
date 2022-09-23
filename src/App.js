@@ -1,13 +1,16 @@
 import logo from "./logo.svg";
 import "./App.css";
 
-import Backlog from "./Backlog";
+import Backlog from "./Pages/Backlog";
+import Sprint from "./Pages/Sprint";
+import AppContext from "./contexts/AppContext";
 
 function App() {
   return (
-    <div>
+    <AppContext>
       <Backlog />
-    </div>
+      <Sprint />
+    </AppContext>
   );
 }
 
