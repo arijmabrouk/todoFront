@@ -24,7 +24,7 @@ const ModalInput = (props) => {
       </ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={toggle}>
-          submit
+          submillkkkk
         </Button>
       </ModalFooter>
     </Modal>
