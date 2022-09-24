@@ -1,4 +1,5 @@
 import React from "react";
+import { Droppable } from "react-beautiful-dnd";
 
 const Cart = (props) => {
   const { title, index, backlog, setBacklog } = props;
@@ -28,6 +29,7 @@ const Cart = (props) => {
         textAlign: "center",
         width: "10rem",
         cursor: "move",
+        boxShadow: "0 0 5px  black",
       }}
     >
       <h5>{title}</h5>

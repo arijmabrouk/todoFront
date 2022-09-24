@@ -11,12 +11,30 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import axios from "axios";
 function TaskUpdateModal(props) {
-  const { modalTask, setModalTask, toggleTask } = props;
+  const { modalTask, setModalTask, toggleTask, title, setTitle } = props;
 
   // const handleChange = (e) => {
   //   setUserStory(e.target.value);
   // };
+
+  const handleChange = async (e) => {
+    const temp = e.target.value;
+    setTitle(temp);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await axios.patch("http://localhost:5000/api/v1/sprints/modifier", {
+        title: title,
+      });
+      setTitle(title);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+    setModalTask(false);
+  };
 
   return (
     <Modal size="lg" isOpen={modalTask} toggle={toggleTask}>
@@ -38,7 +56,13 @@ function TaskUpdateModal(props) {
               <Label for="name">Name task :</Label>
             </Col>
             <Col xs="12" lg="8">
-              <Input name="email" id="name" placeholder="" />
+              <Input
+                name="email"
+                id="name"
+                placeholder=""
+                defaultValue={title}
+                onChange={handleChange}
+              />
             </Col>
           </Row>
 
@@ -75,7 +99,7 @@ function TaskUpdateModal(props) {
         </Form>
       </ModalBody>
       <ModalFooter>
-        <Button color="success" onClick={toggleTask}>
+        <Button color="success" onClick={handleSubmit}>
           Update
         </Button>
       </ModalFooter>

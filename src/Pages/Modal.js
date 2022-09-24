@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, Input } from "reactstrap";
+import axios from "axios";
 
 const ModalInput = (props) => {
   const { modal, setModal, userStory, setUserStory, setList, list } = props;
@@ -8,14 +9,21 @@ const ModalInput = (props) => {
     setUserStory(e.target.value);
   };
 
-  const toggle = () => {
-    setList([...list, userStory]);
-    console.log(list);
-    setModal(false);
+  const toggle = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/v1/backlogs/",
+        { title: userStory }
+      );
+      setList((list) => [...list, data]);
+      setModal(false);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
   };
 
   return (
-    <Modal size="lg" isOpen={modal} toggle={toggle}>
+    <Modal size="lg" isOpen={modal}>
       <ModalBody>
         <Input
           placeholder="add youd user story"
@@ -24,7 +32,7 @@ const ModalInput = (props) => {
       </ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={toggle}>
-          submillkkkk
+          submit
         </Button>
       </ModalFooter>
     </Modal>
