@@ -75,6 +75,12 @@ const Backlog = () => {
                 style={{
                   backgroundColor: "#EA4949",
                   border: "none",
+                  borderRadius: "0.7rem",
+                  width: "4.3rem",
+                  height: "2rem",
+                  color: "white",
+                  textAlign: "center",
+                  paddingTop: "0.2rem",
                 }}
                 onClick={toggle}
               >

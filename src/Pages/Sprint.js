@@ -1,14 +1,34 @@
 import React, { useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import { Button, Table, Col, Row } from "reactstrap";
+import Cart from "./Cart";
+import ListTasksModal from "./ListTasksModal";
+import TaskUpdateModal from "./TaskUpdateModal";
 
 const Sprint = () => {
   const [modal, setModal] = useState(false);
+  const [modalTask, setModalTask] = useState(false);
+  const [backlog, setBacklog] = useState([]);
+
   const toggle = () => {
     setModal(!modal);
   };
+  const toggleTask = () => {
+    setModalTask(!modalTask);
+  };
   return (
-    <div>
+    <div style={{ marginTop: "2rem" }}>
+      <TaskUpdateModal
+        modalTask={modalTask}
+        setModalTask={setModalTask}
+        toggleTask={toggleTask}
+      />
+      <ListTasksModal
+        backlog={backlog}
+        setBacklog={setBacklog}
+        toggle={toggle}
+        modal={modal}
+      />
       <Table>
         <Row style={{ marginInline: "4rem" }}>
           <Col xs="6" lg="2">
@@ -24,6 +44,19 @@ const Sprint = () => {
             >
               Backlog
             </th>
+
+            {backlog.map((b, index) => {
+              return (
+                <Cart
+                  backlog={backlog}
+                  setBacklog={setBacklog}
+                  index={index}
+                  key={index}
+                  title={b}
+                />
+              );
+            })}
+
             <Button
               style={{
                 marginTop: "3rem",
@@ -35,6 +68,18 @@ const Sprint = () => {
               onClick={toggle}
             >
               AddTask
+            </Button>
+            <Button
+              style={{
+                marginTop: "3rem",
+                backgroundColor: "#87CEFA",
+                color: "red",
+                width: "9rem",
+                border: "none",
+              }}
+              onClick={toggleTask}
+            >
+              update Task
             </Button>
           </Col>
           <Col xs="6" lg="2">
